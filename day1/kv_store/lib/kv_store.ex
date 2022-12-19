@@ -3,9 +3,9 @@ defmodule KVStore do
 
   # Client
 
-  @spec start :: {:ok, pid}
-  @spec start(map) :: {:ok, pid}
-  def start(map \\ %{}) do
+  @spec start_link :: GenServer.on_start()
+  @spec start_link(map) :: GenServer.on_start()
+  def start_link(map \\ %{}) do
     GenServer.start_link(__MODULE__, map)
   end
 
