@@ -28,7 +28,7 @@ defmodule KVStore do
 
   @impl GenServer
   def handle_call({:get, key}, _from, map) do
-    {:reply, map[key], map}
+    {:reply, Map.get(map, key), map}
   end
 
   @impl GenServer
