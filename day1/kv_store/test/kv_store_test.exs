@@ -3,7 +3,7 @@ defmodule KVStoreTest do
   doctest KVStore
 
   setup do
-    {:ok, pid} = KVStore.start(%{a: 1})
+    {:ok, pid} = KVStore.start_link(%{a: 1})
     {:ok, pid: pid}
   end
 
@@ -13,5 +13,6 @@ defmodule KVStoreTest do
 
   test "put", context do
     assert KVStore.put(context[:pid], {:b, 2}) == :ok
+    assert KVStore.get(context[:pid], :b) == 2
   end
 end
