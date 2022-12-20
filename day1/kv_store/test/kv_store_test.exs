@@ -12,7 +12,12 @@ defmodule KVStoreTest do
   end
 
   test "put", context do
+    IO.inspect(KVStore.get(context[:pid], :b))
     assert KVStore.put(context[:pid], {:b, 2}) == :ok
     assert KVStore.get(context[:pid], :b) == 2
+  end
+
+  test "another get", context do
+    IO.inspect(KVStore.get(context[:pid], :b))
   end
 end

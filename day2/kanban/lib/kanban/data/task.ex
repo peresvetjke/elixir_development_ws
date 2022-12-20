@@ -6,6 +6,17 @@ defmodule Kanban.Data.Task do
 
   import Ecto.Changeset
 
+  @type embeds_one(t) :: [t]
+
+  @type t :: %__MODULE__{
+    title: String.t(),
+    description: String.t(),
+    state: String.t(),
+    time_spent: integer(),
+    due: DateTime.t(),
+    project: embeds_one(Project.t())
+  }
+
   @primary_key false
   embedded_schema do
     # field :id, :binary_id, autogenerate: &Ecto.UUID.generate/0
@@ -19,6 +30,7 @@ defmodule Kanban.Data.Task do
     # belongs_to :project, Project
   end
 
+  @spec changeset(Task.t(), any()) :: Ecto.Changeset.t()
   def changeset(task, params) do
     task
     |> cast(params, ~w[title description due]a)
@@ -27,9 +39,11 @@ defmodule Kanban.Data.Task do
     |> validate_inclusion(:state, ~w[idle doing done]a)
   end
 
+  @spec create(any()) :: Task.t() | tuple()
   def create(params) when is_list(params),
     do: params |> Map.new() |> create()
 
+  @spec create(any()) :: Task.t() | tuple()
   def create(params) when is_map(params) do
     %Task{}
     |> changeset(params)
@@ -39,6 +53,7 @@ defmodule Kanban.Data.Task do
     end
   end
 
+  @spec create(String.t(), integer(), String.t(), String.t(), String.t()) :: Task.t() | tuple()
   def create(title, due_days, project_title, description \\ nil, project_description \\ nil) do
     create(
       title: title,
@@ -46,5 +61,10 @@ defmodule Kanban.Data.Task do
       description: description,
       project: %{title: project_title, description: project_description}
     )
+  end
+
+  @spec create_default :: Task.t()
+  def create_default do
+    create("Task #1", 10, "Project #1")
   end
 end
