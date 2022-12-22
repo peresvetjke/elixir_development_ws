@@ -34,7 +34,7 @@ defmodule Kanban.Data.Issue do
     |> cast_embed(:project, with: &Project.changeset/2)
     |> cast_embed(:tasks, with: &Task.changeset/2)
     |> validate_required(~w[title description]a)
-    |> validate_inclusion(:type, ~w[bug feature]a)
+    |> validate_inclusion(:type, ~w[bug feature]s)
     |> validate_inclusion(:state, ~w[idle ondoing done]a)
   end
 

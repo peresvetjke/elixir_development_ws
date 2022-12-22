@@ -9,7 +9,9 @@ defmodule Kanban.Application do
   def start(_type, _args) do
     children = [
       {Registry, keys: :unique, name: Kanban.TaskRegistry},
-      Kanban.Main
+      {Registry, keys: :unique, name: Kanban.IssueRegistry},
+      Kanban.Main,
+      Kanban.Web.Task
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
