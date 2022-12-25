@@ -8,14 +8,14 @@ defmodule Kanban.Data.Project do
   @type embeds_one(t) :: [t]
 
   @type t :: %__MODULE__{
-    title: String.t(),
-    description: String.t()
-  }
+          title: String.t(),
+          description: String.t()
+        }
 
   @primary_key false
   embedded_schema do
-    field :title, :string
-    field :description, :string
+    field(:title, :string)
+    field(:description, :string)
   end
 
   @spec changeset(Project.t(), any()) :: Ecto.Changeset.t()
@@ -29,7 +29,6 @@ defmodule Kanban.Data.Project do
   def create(params) when is_list(params),
     do: params |> Map.new() |> create()
 
-  @spec create(any()) :: Project.t() | tuple()
   def create(params) when is_map(params) do
     %Project{}
     |> changeset(params)
@@ -38,4 +37,7 @@ defmodule Kanban.Data.Project do
       changeset -> apply_changes(changeset)
     end
   end
+
+  def create(params),
+    do: {:error, [{:unknown_params_type, params}]}
 end
