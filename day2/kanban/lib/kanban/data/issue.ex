@@ -5,7 +5,7 @@ defmodule Kanban.Data.Issue do
 
   import Ecto.Changeset
 
-  @type embeds_one(t) :: [t]
+  @type embeds_one(t) :: t
   @type embeds_many(t) :: [t]
   @type _ :: _
 
