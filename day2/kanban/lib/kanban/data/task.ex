@@ -6,15 +6,15 @@ defmodule Kanban.Data.Task do
 
   import Ecto.Changeset
 
-  @type embeds_one(t) :: [t]
+  @type embeds_one(t) :: t
 
   @type t :: %__MODULE__{
-          title: String.t(),
-          description: String.t(),
+          title: nil | String.t(),
+          description: nil | String.t(),
           state: String.t(),
-          time_spent: integer(),
-          due: DateTime.t(),
-          project: embeds_one(Project.t())
+          time_spent: non_neg_integer(),
+          due: nil | DateTime.t(),
+          project: nil | embeds_one(Project.t())
         }
 
   @primary_key false
@@ -39,7 +39,7 @@ defmodule Kanban.Data.Task do
     |> validate_inclusion(:state, ~w[idle doing done]a)
   end
 
-  @spec create(any()) :: Task.t() | tuple()
+  @spec create(any()) :: Task.t() | {:error, any()}
   def create(params) when is_list(params),
     do: params |> Map.new() |> create()
 
@@ -53,11 +53,9 @@ defmodule Kanban.Data.Task do
   end
 
   def create(params),
-    do: {:error, [{:unknown_params_type, params}]}
+    do: {:error, [unknown_params_type: params]}
 
-  @spec create(String.t(), integer(), String.t()) :: Task.t() | tuple()
-  @spec create(String.t(), integer(), String.t(), String.t()) :: Task.t() | tuple()
-  @spec create(String.t(), integer(), String.t(), String.t(), String.t()) :: Task.t() | tuple()
+  @spec create(String.t(), integer(), String.t(), nil | String.t(), nil | String.t()) :: Task.t() | tuple()
   def create(title, due_days, project_title, description \\ nil, project_description \\ nil) do
     create(
       title: title,

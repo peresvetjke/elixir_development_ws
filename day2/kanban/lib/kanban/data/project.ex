@@ -5,11 +5,11 @@ defmodule Kanban.Data.Project do
 
   alias Kanban.Data.{Task, Issue, Project}
 
-  @type embeds_one(t) :: [t]
+  @type embeds_one(t) :: t
 
   @type t :: %__MODULE__{
-          title: String.t(),
-          description: String.t()
+          title: nil | String.t(),
+          description: nil | String.t()
         }
 
   @primary_key false
@@ -39,5 +39,5 @@ defmodule Kanban.Data.Project do
   end
 
   def create(params),
-    do: {:error, [{:unknown_params_type, params}]}
+    do: {:error, [unknown_params_type: params]}
 end

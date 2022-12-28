@@ -25,7 +25,7 @@ defmodule Kanban.TaskManager do
   def init(_init_arg),
     do: DynamicSupervisor.init(strategy: :one_for_one)
 
-  @spec start_task(Task.t()) :: pid()
+  @spec start_task(Task.t()) :: pid() | nil
   def start_task(%Task{} = task) do
     Kanban.TaskManager
     |> DynamicSupervisor.start_child({Kanban.TaskFSM, task: task})
@@ -36,12 +36,16 @@ defmodule Kanban.TaskManager do
 
       {:error, {:already_started, pid}} ->
         pid
+
+      _ ->
+        nil
     end
   end
 
-  @spec start_task(String.t(), integer(), String.t()) :: pid()
+  @spec start_task(String.t(), integer(), String.t()) :: pid() | nil
   def start_task(title, due_days, project_title) do
-    Task.create(title, due_days, project_title)
+    title
+    |> Task.create(due_days, project_title)
     |> start_task()
   end
 end

@@ -5,15 +5,15 @@ defmodule Kanban.Data.Issue do
 
   import Ecto.Changeset
 
-  @type embeds_one(t) :: t
+  @type embeds_one(t) :: t | nil
   @type embeds_many(t) :: [t]
   @type _ :: _
 
   @type t :: %__MODULE__{
-          title: String.t(),
-          description: String.t(),
+          title: nil | String.t(),
+          description: nil | String.t(),
           state: String.t(),
-          type: String.t(),
+          type: nil | String.t(),
           project: embeds_one(Project.t()),
           tasks: embeds_many(Task.t())
         }
@@ -44,7 +44,7 @@ defmodule Kanban.Data.Issue do
     do: params |> Map.new() |> create()
 
   def create(params) when is_map(params) do
-    changeset(%Issue{}, params)
+    %Issue{}
     |> changeset(params)
     |> case do
       %Ecto.Changeset{valid?: false, errors: errors} -> {:error, errors}
@@ -53,7 +53,7 @@ defmodule Kanban.Data.Issue do
   end
 
   def create(params),
-    do: {:error, [{:unknown_params_type, params}]}
+    do: {:error, [unknown_params_type: params]}
 
   @spec create_default() :: Issue.t() | tuple()
   def create_default do

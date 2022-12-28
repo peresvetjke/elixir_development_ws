@@ -7,8 +7,8 @@ defmodule Kanban.Data.User do
   @type embeds_many(t) :: [t]
 
   @type t :: %__MODULE__{
-          name: String.t(),
-          password: String.t(),
+          name: nil | String.t(),
+          password: nil | String.t(),
           tasks: embeds_many(Task.t())
         }
 
