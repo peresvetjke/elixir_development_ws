@@ -4,13 +4,25 @@ defmodule Kanban.Data.User do
 
   alias Kanban.Data.{Task, User}
 
+  @type embeds_many(t) :: [t]
+
+  @type t :: %__MODULE__{
+          name: nil | String.t(),
+          password: nil | String.t(),
+          tasks: embeds_many(Task.t())
+        }
+
   @primary_key false
   embedded_schema do
     # field :id, :binary_id, autogenerate: &Ecto.UUID.generate/0
-    field :name, :string
-    field :password, :string, redact: true
-    embeds_many :tasks, Task
+    field(:name, :string)
+    field(:password, :string, redact: true)
+    embeds_many(:tasks, Task)
   end
+
+  @spec changeset(User.t(), any()) :: Ecto.Changeset.t()
+  def changeset(user, params) when is_list(params),
+    do: changeset(user, Map.new(params))
 
   def changeset(user, params) do
     user
@@ -19,6 +31,7 @@ defmodule Kanban.Data.User do
     |> validate_required(~w[name]a)
   end
 
+  @spec create(any()) :: User.t() | tuple()
   def create(params) when is_list(params),
     do: params |> Map.new() |> create()
 
@@ -31,6 +44,10 @@ defmodule Kanban.Data.User do
     end
   end
 
+  def create(params),
+    do: {:error, [{:unknown_params_type, params}]}
+
+  @spec create_default() :: User.t() | tuple()
   def create_default do
     create(
       name: "am",
