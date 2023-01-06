@@ -13,7 +13,7 @@ defmodule Kanban do
 
   def query_task(task_id) do
     # if Process.alive?({:via, Registry, {Kanban.TaskRegistry, task_id}}) do
-    Kanban.TaskFSM.state({:via, Registry, {Kanban.TaskRegistry, task_id}})
+      Kanban.TaskFSM.state({:via, Registry, {Kanban.TaskRegistry, task_id}})
     # end
   end
 end
