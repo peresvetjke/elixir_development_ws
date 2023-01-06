@@ -23,4 +23,16 @@ defmodule IssueTest do
       refute changeset.valid?
     end
   end
+
+  describe "create" do
+    test "returns issue when params are valid (map)" do
+      issue = Issue.create(%{title: "Title", description: "Description", type: "feature"})
+      assert issue == Issue.changeset(%Issue{}, @valid_attrs) |> Ecto.Changeset.apply_changes()
+    end
+
+    test "returns issue when params are valid (list)" do
+      issue = Issue.create(title: "Title", description: "Description", type: "feature")
+      assert issue == Issue.changeset(%Issue{}, @valid_attrs) |> Ecto.Changeset.apply_changes()
+    end
+  end
 end

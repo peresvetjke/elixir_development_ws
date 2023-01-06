@@ -22,7 +22,7 @@ defmodule Kanban.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:dialyxir, "~> 1.0", runtime: false},
+      {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:plug_cowboy, "~> 1.0"},
       {:plug, "~> 1.4"},
       {:ecto, "~> 3.0"},
